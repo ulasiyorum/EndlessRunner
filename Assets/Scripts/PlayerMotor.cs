@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMotor : MonoBehaviour
 {
+    [SerializeField] float speed = 3f;
     private CharacterController controller;
     void Start()
     {
@@ -13,6 +14,6 @@ public class PlayerMotor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        controller.Move(Vector3.forward * Time.deltaTime);
+        controller.Move(Vector3.forward * speed * Time.deltaTime);
     }
 }
