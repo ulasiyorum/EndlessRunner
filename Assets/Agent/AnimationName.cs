@@ -23,5 +23,6 @@ public class AnimationName : MonoBehaviour
         string clipName = clipInfo[0].clip.name;
 
         animName.text = clipName;
+
     }
 }
