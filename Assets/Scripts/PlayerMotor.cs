@@ -26,15 +26,18 @@ public class PlayerMotor : MonoBehaviour
 
         string input = Input.inputString;
 
-        if (string.IsNullOrEmpty(input))
+        if (string.IsNullOrEmpty(input) || anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.ToLower() != "run")
             return;
 
-
+        Debug.Log(input);
 
         switch(input)
         {
-            case " ":
+            case " ": case "w":
                 anim.SetTrigger("jump_" + Random.Range(1,3));
+                break;
+            case "s":
+                anim.SetTrigger("slide");
                 break;
             default:
                 break;
