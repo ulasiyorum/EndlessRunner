@@ -33,7 +33,6 @@ public class PlayerMotor : MonoBehaviour
             return;
 
         Debug.Log(input);
-        Vector3 newDir = runDirection;
         switch(input)
         {
             case " ": case "w":
@@ -44,17 +43,30 @@ public class PlayerMotor : MonoBehaviour
                 break;
             case "d":
                 transform.Rotate(0, 90, 0);
-                newDir = Vector3.right;
                 break;
             case "a":
                 transform.Rotate(0, 270, 0);
-                newDir = Vector3.left;
                 break;
             default:
                 break;
         }
 
-        // Find new running direction according to player's direction
+        ChangeDirection();
+    }
 
+
+    private void ChangeDirection()
+    {
+
+        float y = transform.localEulerAngles.y;
+
+        runDirection = y switch
+        {
+            0 => Vector3.forward,
+            90 => Vector3.right,
+            180 => Vector3.back,
+            270 => Vector3.left,
+            _ => Vector3.forward,
+        };
     }
 }
