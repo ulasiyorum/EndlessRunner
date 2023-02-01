@@ -17,4 +17,5 @@ public class GameHandler : MonoBehaviour
     }
 
     public Canvas canvas;
+    public PlayerMotor player;
 }
