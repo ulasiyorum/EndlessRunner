@@ -21,11 +21,7 @@ public class CoinBehaviour : MonoBehaviour
     {
         if(linkedCoins == null)
         {
-            int size = UnityEngine.Random.Range(0, 5);
-            if(size == 4)
-            {
-                size = UnityEngine.Random.Range(2, 8);
-            }
+            int size = UnityEngine.Random.Range(0, 8);
             linkedCoins = new LinkedList<GameObject>();
             linkedCoins.AddFirst(gameObject);
 
