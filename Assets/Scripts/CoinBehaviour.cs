@@ -25,7 +25,7 @@ public class CoinBehaviour : MonoBehaviour
             linkedCoins = new LinkedList<GameObject>();
             linkedCoins.AddFirst(gameObject);
 
-            for(int i = 0; i < size; i++)
+            for(int i = 0; i <= size; i++)
             {
                 GameObject go = Instantiate(gameObject);
                 GameObject last = linkedCoins.Last.Value;
