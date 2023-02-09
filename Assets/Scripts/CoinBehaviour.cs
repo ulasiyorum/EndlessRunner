@@ -33,13 +33,37 @@ public class CoinBehaviour : MonoBehaviour
                 go.transform.position = new Vector3(transform.position.x, transform.position.y, last.transform.position.z + scale);
                 linkedCoins.AddLast(go);
             }
-        }
+        } 
+    }
+
+    private static bool IsLast(GameObject obj)
+    {
+        if (obj == null)
+            return false;
+
+        if (linkedCoins.Last == null)
+            return false;
+
+        return obj.Equals(linkedCoins.Last.Value);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         GameHandler.Instance.profile.CollectCoin(point);
+
+        bool isLast = IsLast(gameObject);
+
+        linkedCoins.RemoveFirst();
+
+
+        if (isLast)
+        {
+            linkedCoins = null;
+            LinkCoins();
+        }
+
         // play collect animation
-        Destroy(this.gameObject);
+        Destroy(gameObject);
+
     }
 }
