@@ -17,12 +17,14 @@ public class CoinBehaviour : MonoBehaviour
         
     }
 
-    private void LinkCoins()
+    private void LinkCoins(float spaceFromStart = 0)
     {
         if(linkedCoins == null)
         {
             int size = UnityEngine.Random.Range(0, 8);
             linkedCoins = new LinkedList<GameObject>();
+
+            transform.position = new Vector3(transform.position.x , transform.position.y , transform.position.z + spaceFromStart);
             linkedCoins.AddFirst(gameObject);
 
             for(int i = 0; i <= size; i++)
@@ -59,7 +61,7 @@ public class CoinBehaviour : MonoBehaviour
         if (isLast)
         {
             linkedCoins = null;
-            LinkCoins();
+            LinkCoins(UnityEngine.Random.Range(0,GetComponent<MeshCollider>().bounds.size.z * 100));
         }
 
         // play collect animation
