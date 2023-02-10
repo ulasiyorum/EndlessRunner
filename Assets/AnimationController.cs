@@ -12,6 +12,8 @@ public class AnimationController : StateMachineBehaviour
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         isRunning = true;
+
+        GameHandler.Instance.player.OnControllerAnimationEnd(animator.GetCurrentAnimatorStateInfo(layerIndex));
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

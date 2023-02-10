@@ -21,9 +21,6 @@ public class PlayerMotor : MonoBehaviour
     void Update()
     {
         HandleMove();
-
-        string input = Input.inputString;
-        Debug.Log(input);
     }
 
     private void HandleMove()
@@ -41,9 +38,13 @@ public class PlayerMotor : MonoBehaviour
         {
             case " ": case "w":
                 anim.SetTrigger("jump_" + Random.Range(1,3));
+                controller.center = new Vector3(0, 3, 0);
                 break;
             case "s":
                 anim.SetTrigger("slide");
+                controller.height = 0.25f;
+                controller.radius = 0.25f;
+                controller.center = new Vector3(0, 0, 0);
                 break;
             case "d":
                 transform.Rotate(0, 90, 0);
@@ -58,6 +59,18 @@ public class PlayerMotor : MonoBehaviour
         ChangeDirection();
     }
 
+    public void OnControllerAnimationEnd(AnimatorStateInfo stateInfo)
+    {
+        if(stateInfo.IsTag("jump"))
+            controller.center = new Vector3(0, 1, 0);
+
+        if(stateInfo.IsTag("slide"))
+        {
+            controller.height = 2f;
+            controller.radius = 0.5f;
+            controller.center = new Vector3(0, 1, 0);
+        }
+    }
 
     private void ChangeDirection()
     {
