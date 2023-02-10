@@ -10,6 +10,9 @@ public class PlayerMotor : MonoBehaviour
     private CharacterController controller;
     private Animator anim;
     private Vector3 runDirection;
+
+    private bool isStopped = false;
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -20,7 +23,8 @@ public class PlayerMotor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleMove();
+        if(!isStopped)
+            HandleMove();
     }
 
     private void HandleMove()
@@ -70,6 +74,15 @@ public class PlayerMotor : MonoBehaviour
             controller.radius = 0.5f;
             controller.center = new Vector3(0, 1, 0);
         }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        isStopped = true;
+
+        // depending on hit type choose which animation to play
+
+        anim.SetTrigger("fall_1");
     }
 
     private void ChangeDirection()
