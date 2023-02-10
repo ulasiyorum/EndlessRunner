@@ -11,7 +11,7 @@ public class PlayerMotor : MonoBehaviour
     private Animator anim;
     private Vector3 runDirection;
 
-    private bool isStopped = false;
+    public bool isStopped = false;
 
     void Start()
     {

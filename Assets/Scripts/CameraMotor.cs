@@ -7,6 +7,7 @@ public class CameraMotor : MonoBehaviour
     private Vector3 spaceBetween;
     void Start()
     {
+        GameHandler.Instance.player.enabled = true;
         spaceBetween = transform.position;
     }
 
