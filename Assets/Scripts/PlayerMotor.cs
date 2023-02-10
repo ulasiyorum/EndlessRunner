@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerMotor : MonoBehaviour
 {
-    [SerializeField] float speed = 3f;
+    [SerializeField] float speed = 4f;
     private CharacterController controller;
     private Animator anim;
     private Vector3 runDirection;
@@ -21,6 +21,9 @@ public class PlayerMotor : MonoBehaviour
     void Update()
     {
         HandleMove();
+
+        string input = Input.inputString;
+        Debug.Log(input);
     }
 
     private void HandleMove()
@@ -29,10 +32,11 @@ public class PlayerMotor : MonoBehaviour
 
         string input = Input.inputString;
 
-        if (string.IsNullOrEmpty(input) || anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.ToLower() != "run")
+        if (string.IsNullOrEmpty(input) || !AnimationController.isRunning)
             return;
 
         Debug.Log(input);
+
         switch(input)
         {
             case " ": case "w":
