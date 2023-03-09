@@ -92,8 +92,6 @@ public class PlayerMotor : MonoBehaviour
         // depending on hit type choose which animation to play
 
         anim.SetTrigger("fall_1");
-
-        CancelInvoke("Destroy");
     }
 
     private void ChangeDirection()
