@@ -13,6 +13,8 @@ public class CameraMotor : MonoBehaviour
 
     void Update()
     {
+        transform.rotation = Quaternion.Slerp(transform.rotation, GameHandler.Instance.player.transform.rotation,0.1f);
         transform.position = GameHandler.Instance.player.transform.position + spaceBetween;
     }
+    
 }

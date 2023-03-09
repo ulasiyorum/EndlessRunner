@@ -17,6 +17,9 @@ public class AssetsHandler : MonoBehaviour
         }
     }
 
+    public GameObject CoinPrefab { get => coinPrefab; }
+
+    [SerializeField] GameObject coinPrefab;
     public GameObject[] GroundPrefabs { get => groundPrefabs; }
     [SerializeField] GameObject[] groundPrefabs;
 }

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -29,6 +30,7 @@ public class PlayerMotor : MonoBehaviour
 
     private void HandleMove()
     {
+        
         controller.Move(speed * Time.deltaTime * runDirection);
 
         string input = Input.inputString;
@@ -43,6 +45,8 @@ public class PlayerMotor : MonoBehaviour
             case " ": case "w":
                 anim.SetTrigger("jump_" + Random.Range(1,3));
                 controller.center = new Vector3(0, 3, 0);
+                //Vector3.MoveTowards(cvc.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset, new Vector3(0, 2, 0), 0.4f);
+
                 break;
             case "s":
                 anim.SetTrigger("slide");
@@ -66,23 +70,30 @@ public class PlayerMotor : MonoBehaviour
     public void OnControllerAnimationEnd(AnimatorStateInfo stateInfo)
     {
         if(stateInfo.IsTag("jump"))
-            controller.center = new Vector3(0, 1, 0);
+            controller.center = new Vector3(0, 0.8f, 0);
 
         if(stateInfo.IsTag("slide"))
         {
-            controller.height = 2f;
-            controller.radius = 0.5f;
-            controller.center = new Vector3(0, 1, 0);
+            controller.height = 1.6f;
+            controller.radius = 0.32f;
+            controller.center = new Vector3(0, 0.8f, 0);
         }
+
+        //Vector3.MoveTowards(cvc.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset, new Vector3(0, 0.3f, 0), 0.4f);
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (hit.collider.tag == "Ground")
+            return;
+
         isStopped = true;
 
         // depending on hit type choose which animation to play
 
         anim.SetTrigger("fall_1");
+
+        CancelInvoke("Destroy");
     }
 
     private void ChangeDirection()
