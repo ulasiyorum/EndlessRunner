@@ -9,11 +9,11 @@ using UnityEngine.UIElements;
 public class GroundMotor : MonoBehaviour
 {
     private static int roomCounter = 0;
-    private int roomNumber = 0;
+    public int roomNumber = 0;
     public static int currentAngle = -90;
 
-    private static int currentCount = 0;
-    public static int roomCount = 3;
+    public static int currentCount = 0;
+    private static int roomCount = 3;
     public static GameObject latestObj;
 
     public Transform parent;
@@ -47,6 +47,8 @@ public class GroundMotor : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.gameObject.tag == "MainCamera")
+            return;
         Generate();
         currentCount--;
     }
@@ -80,6 +82,7 @@ public class GroundMotor : MonoBehaviour
         latestObj = go;
 
         currentCount++;
+
         if (currentCount < roomCount)
             LatestMotor.Generate();
 
@@ -177,7 +180,7 @@ public class GroundMotor : MonoBehaviour
         {
             return Type.rightOpen;
         }
-        else if (random == 2 && type != Type.backOpen)
+        else if(random == 2 && type != Type.backOpen)
         {
             return type;
         }

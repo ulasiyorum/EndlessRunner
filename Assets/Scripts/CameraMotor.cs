@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class CameraMotor : MonoBehaviour
 {
-    private Vector3 spaceBetween;
+    public Transform Target;
+    public Transform Obstruction;
+    //private Vector3 spaceBetween;
     void Start()
     {
-        GameHandler.Instance.player.enabled = true;
-        spaceBetween = transform.position;
+        Obstruction = Target;
+        //GameHandler.Instance.player.enabled = true;
+        //spaceBetween = transform.position;
     }
 
     void Update()
     {
-        transform.rotation = Quaternion.Slerp(transform.rotation, GameHandler.Instance.player.transform.rotation,0.1f);
-        transform.position = GameHandler.Instance.player.transform.position + spaceBetween;
+        //transform.rotation = Quaternion.Slerp(transform.rotation, GameHandler.Instance.player.transform.rotation,0.1f);
+        //transform.position = GameHandler.Instance.player.transform.position + spaceBetween;
     }
+
+    private void LateUpdate()
+    {
+    }
+
     
 }

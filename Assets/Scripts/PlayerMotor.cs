@@ -7,17 +7,17 @@ using UnityEngine.UI;
 
 public class PlayerMotor : MonoBehaviour
 {
-    [SerializeField] float speed = 4f;
-    private CharacterController controller;
+    private float speed = 6.7f;
+    private CapsuleCollider controller;
     private Animator anim;
     private Vector3 runDirection;
-
+    private float cd = 0;
     public bool isStopped = false;
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        controller = GetComponent<CharacterController>();
+        controller = GetComponent<CapsuleCollider>();
         runDirection = Vector3.forward;
     }
 
@@ -26,19 +26,25 @@ public class PlayerMotor : MonoBehaviour
     {
         if(!isStopped)
             HandleMove();
+
+        cd += Time.deltaTime;
     }
+
 
     private void HandleMove()
     {
-        
-        controller.Move(speed * Time.deltaTime * runDirection);
 
+        //controller.Move(speed * Time.deltaTime * runDirection);
+        transform.position += new Vector3(runDirection.x * Time.deltaTime * speed,runDirection.y * Time.deltaTime * speed,runDirection.z * Time.deltaTime * speed);
         string input = Input.inputString;
 
         if (string.IsNullOrEmpty(input) || !AnimationController.isRunning)
             return;
 
         Debug.Log(input);
+
+        if ((input == "d" || input == "a") && cd < 1f)
+            cd = 0f;
 
         switch(input)
         {
@@ -63,8 +69,9 @@ public class PlayerMotor : MonoBehaviour
             default:
                 break;
         }
-
         ChangeDirection();
+
+        
     }
 
     public void OnControllerAnimationEnd(AnimatorStateInfo stateInfo)
@@ -82,23 +89,24 @@ public class PlayerMotor : MonoBehaviour
         //Vector3.MoveTowards(cvc.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset, new Vector3(0, 0.3f, 0), 0.4f);
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnTriggerEnter(Collider other)
     {
-        if (hit.collider.tag == "Ground")
+        if (other.gameObject.tag == "Ground" || other.isTrigger)
             return;
 
         isStopped = true;
+        AssetsHandler.Instance.endUI.SetActive(true);
 
         // depending on hit type choose which animation to play
 
         anim.SetTrigger("fall_1");
     }
 
-    private void ChangeDirection()
+    public bool ChangeDirection()
     {
 
+        Vector3 lastDirection = runDirection;
         float y = transform.localEulerAngles.y;
-
         runDirection = y switch
         {
             0 => Vector3.forward,
@@ -107,5 +115,39 @@ public class PlayerMotor : MonoBehaviour
             270 => Vector3.left,
             _ => Vector3.forward,
         };
+
+
+        if (runDirection != lastDirection)
+        {
+            GroundMotor[] motors = FindObjectsOfType<GroundMotor>();
+            GameObject go = null;
+            int rNumber = 0;
+            foreach (var motor in motors)
+            {
+                if (motor.transform.parent.GetComponent<BoxCollider>().bounds.Contains(transform.position))
+                    rNumber = motor.roomNumber + 1;
+            }
+            foreach(var motor in motors)
+            {
+                if (motor.roomNumber == rNumber)
+                    go = motor.transform.parent.gameObject;
+            }
+
+            if (Vector3.Distance(transform.position, go.transform.position) > 3.2f)
+                return false;
+
+            if (runDirection == Vector3.forward || runDirection == Vector3.back)
+            {
+                
+                Debug.Log("run x");
+                transform.position = new Vector3(go.transform.position.x, transform.position.y, transform.position.z);
+            } else
+            {
+                Debug.Log("run y");
+                transform.position = new Vector3(transform.position.x, transform.position.y, go.transform.position.z);
+            }
+        }
+        return true;
     }
+
 }

@@ -33,9 +33,14 @@ namespace VolumetricLines
 
 		private static Color currentColor = new Color(0,1,0);
 		private static int counter;
-
+		public static void Reset()
+		{
+            currentColor = new Color(0, 1, 0);
+        }
         private void Awake()
         {
+			if (gameObject.tag == "Laser")
+				return;
             currentColor = new Color(currentColor.r + 0.01f, currentColor.g - 0.01f, currentColor.b + Random.Range(-0.03f, 0.03f));
 
             LineColor = currentColor;

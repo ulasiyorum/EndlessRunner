@@ -100,6 +100,6 @@ MonoBehaviour:
   m_doNotOverwriteTemplateMaterialProperties: 0
   m_startPos: {x: 0, y: 100, z: 0}
   m_endPos: {x: 0, y: 0, z: 0}
-  m_lineColor: {r: 0, g: 1, b: 1, a: 1}
+  m_lineColor: {r: 0.13999999, g: 0.86000013, b: -0.010896643, a: 1}
   m_lineWidth: 20
   m_lightSaberFactor: 0.8
