@@ -20,10 +20,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void GenerateObstacle()
     {
-        int random = Random.Range(0, 4);
-
-        if (random >= Prefabs.Length)
-            return;
+        int random = Random.Range(0, Prefabs.Length);
 
         if (Prefabs[random].tag == "Wall")
         {
@@ -38,6 +35,21 @@ public class ObstacleSpawner : MonoBehaviour
             GameObject obstacle = Instantiate(Prefabs[random]);
             obstacle.transform.parent = transform;
             obstacle.transform.position = new Vector3(transform.position.x,Random.Range(0.5f,2f),transform.position.z);
+            obstacle.transform.rotation = transform.rotation;
+            obstacle.transform.Rotate(0, 90, 0);
+        } else if (Prefabs[random].tag == "Desk")
+        {
+            GameObject obstacle = Instantiate(Prefabs[random]);
+            obstacle.transform.parent = transform;
+            obstacle.transform.position = new Vector3(transform.position.x, 0.2f, transform.position.z);
+            obstacle.transform.rotation = transform.rotation;
+            obstacle.transform.Rotate(0, 90, 0);
+        }
+        else if (Prefabs[random].tag == "Server")
+        {
+            GameObject obstacle = Instantiate(Prefabs[random]);
+            obstacle.transform.parent = transform;
+            obstacle.transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
             obstacle.transform.rotation = transform.rotation;
             obstacle.transform.Rotate(0, 90, 0);
         }

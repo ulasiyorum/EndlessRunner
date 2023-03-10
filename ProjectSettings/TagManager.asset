@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - Agent
   - Laser
+  - Desk
+  - Server
   layers:
   - Default
   - TransparentFX

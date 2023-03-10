@@ -44,9 +44,11 @@ public class PlayerMotor : MonoBehaviour
         Debug.Log(input);
 
         if ((input == "d" || input == "a") && cd < 1f)
+        {
             cd = 0f;
-
-        switch(input)
+            return;
+        }
+        switch (input)
         {
             case " ": case "w":
                 anim.SetTrigger("jump_" + Random.Range(1,3));
@@ -58,7 +60,7 @@ public class PlayerMotor : MonoBehaviour
                 anim.SetTrigger("slide");
                 controller.height = 0.25f;
                 controller.radius = 0.25f;
-                controller.center = new Vector3(0, 0, 0);
+                controller.center = new Vector3(0, 0.1f, 0);
                 break;
             case "d":
                 transform.Rotate(0, 90, 0);
