@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class AnimationController : StateMachineBehaviour
+public class OtherAnimationController : StateMachineBehaviour
 {
-    public static bool isRunning = true;
-    public static string[] triggerNames = {"ninjaJump", "roll", "jump_2", "slide", "jump_1", "turn"};
-
+    public static string[] triggerNames = { "ninjaJump", "roll", "jump_2", "slide", "jump_1", "turn" };
     private void Awake()
     {
     }
@@ -15,26 +13,18 @@ public class AnimationController : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
+        foreach (string trigger in triggerNames)
+        {
+            animator.ResetTrigger(trigger);
+        }
 
-        GameHandler.Instance.player.OnControllerAnimationEnd(animator.GetCurrentAnimatorStateInfo(layerIndex));
-
-    }
-
-    public async static void SetIsRunningTrueAsync()
-    {
-        await Task.Delay(444);
-        isRunning = true;
+        AnimationController.isRunning = false;
+        AnimationController.SetIsRunningTrueAsync();
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
-
-        foreach(string trigger in triggerNames)
-        {
-            animator.ResetTrigger(trigger);
-        }
-
     }
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
