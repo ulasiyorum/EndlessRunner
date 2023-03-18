@@ -75,3 +75,4 @@ Assets/Agent/AnimationName.cs
 *.shader
 *.hlsl
 *.cginc
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-10_5_0.bundle
