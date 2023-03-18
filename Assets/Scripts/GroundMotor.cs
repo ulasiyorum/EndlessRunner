@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class GroundMotor : MonoBehaviour
 {
-    private static int roomCounter = 0;
+    private bool created = false;
+    public static int roomCounter = 0;
     public int roomNumber = 0;
     public static int currentAngle = -90;
 
     public static int currentCount = 0;
-    private static int roomCount = 3;
+    private const int roomCount = 3;
     public static GameObject latestObj;
 
     public Transform parent;
@@ -47,8 +49,12 @@ public class GroundMotor : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "MainCamera")
+        if (other.gameObject.tag != "Agent" || created)
             return;
+
+        created = true;
+        Debug.Log(other.gameObject.name);
+
         Generate();
         currentCount--;
     }
@@ -91,11 +97,19 @@ public class GroundMotor : MonoBehaviour
 
     private async void UnloadObject(GameObject go)
     {
-        await Task.Delay(2860 * currentCount);
-        if (!GameHandler.Instance.player.isStopped)
-            Destroy(go);
-        else
-            StartCoroutine(UnloadObj(go));
+        int unloadTime = (2860 - (Mathf.FloorToInt((float)(GameHandler.Instance.player.Speed - 6)) * 250)) * currentCount + (1000 * id);
+        Debug.Log(unloadTime + " is unload time");
+        await Task.Delay(unloadTime);
+        try
+        {
+            if (!GameHandler.Instance.player.isStopped)
+                Destroy(go);
+            else
+                StartCoroutine(UnloadObj(go));
+        } catch
+        {
+            Debug.Log("Map Already Gone");
+        }
     }
 
     private static bool HasStopped()
@@ -151,17 +165,14 @@ public class GroundMotor : MonoBehaviour
 
         return size / 2;
     }
-
     private static GameObject FindPrefab(Type type, int id)
     {
-        GameObject[] prefabs = AssetsHandler.Instance.GroundPrefabs;
 
-        foreach(GameObject prefab in prefabs)
+        foreach(GroundMotor motor in AssetsHandler.Instance.prefabMotors)
         {
-            GroundMotor motor = prefab.GetComponentInChildren<GroundMotor>();
             if(motor.type == type && motor.id == id)
             {
-                return prefab;
+                return motor.parent.gameObject;
             }
         }
 

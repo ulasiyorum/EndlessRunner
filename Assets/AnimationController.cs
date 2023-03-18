@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AnimationController : StateMachineBehaviour
 {
-    public static bool isRunning = true;
+    public static bool isRunning = false;
     public static string[] triggerNames = {"ninjaJump", "roll", "jump_2", "slide", "jump_1", "turn"};
 
     private void Awake()
@@ -16,25 +16,33 @@ public class AnimationController : StateMachineBehaviour
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        isRunning = true;
+
         GameHandler.Instance.player.OnControllerAnimationEnd(animator.GetCurrentAnimatorStateInfo(layerIndex));
 
     }
-
-    public async static void SetIsRunningTrueAsync()
+    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        await Task.Delay(444);
-        isRunning = true;
+        if(!AudioManager.IsPlaying())
+            AudioManager.PlayRun();
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
 
+
         foreach(string trigger in triggerNames)
         {
             animator.ResetTrigger(trigger);
         }
 
+    }
+
+    public static async void SetRunningTrueAsync()
+    {
+        await Task.Delay(460);
+        isRunning = true;
     }
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

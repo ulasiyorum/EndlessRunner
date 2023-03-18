@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AssetsHandler : MonoBehaviour
 {
@@ -22,7 +23,21 @@ public class AssetsHandler : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text endScoreText;
     public TMP_Text highScoreText;
+    public TMP_Text balanceText;
+    public GameObject popUpPrefab;
+    public GroundMotor[] prefabMotors;
+    public GameObject popUpNormalPrefab;
+    public Material[] agentMaterials;
 
+
+    private void Start()
+    {
+        prefabMotors = new GroundMotor[groundPrefabs.Length];
+        for (int i = 0; i < groundPrefabs.Length; i++)
+        {
+            prefabMotors[i] = groundPrefabs[i].GetComponentInChildren<GroundMotor>();
+        }
+    }
 
     public GameObject CoinPrefab { get => coinPrefab; }
 

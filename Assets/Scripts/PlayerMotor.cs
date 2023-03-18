@@ -3,19 +3,78 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerMotor : MonoBehaviour
 {
-    private float speed = 6.7f;
+    private Vector3 startTouchPosition;
+    private Vector3 endTouchPosition;
+    private string input;
+
+    public float Speed { get => speed; }
+    private float speed = 6.2f;
     private CapsuleCollider controller;
     private Animator anim;
     private Vector3 runDirection;
     private float cd = 0;
     public bool isStopped = false;
 
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
+    }
+
+    private void SwipeInput()
+    {
+        if (IsPointerOverUIObject())
+        {
+            input = "";
+            return;
+        }
+
+        input = Input.inputString;
+        if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            startTouchPosition = Input.GetTouch(0).position;
+        }
+
+        if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        {
+            endTouchPosition = Input.GetTouch(0).position;
+
+            if (Mathf.Abs(endTouchPosition.x - startTouchPosition.x) > Mathf.Abs(endTouchPosition.y - startTouchPosition.y))
+            {
+                if (endTouchPosition.x < startTouchPosition.x)
+                {
+                    input = "a";
+                }
+                else if (endTouchPosition.x > startTouchPosition.x)
+                {
+                    input = "d";
+                }
+            }
+            else
+            {
+                if (endTouchPosition.y > startTouchPosition.y)
+                {
+                    input = "w";
+                }
+                else if (startTouchPosition.y > endTouchPosition.y)
+                {
+                    input = "s";
+                }
+            }
+        }
+    }
+
     void Start()
     {
+        profile = GetComponent<PlayerProfile>();
         anim = GetComponent<Animator>();
         controller = GetComponent<CapsuleCollider>();
         runDirection = Vector3.forward;
@@ -28,36 +87,69 @@ public class PlayerMotor : MonoBehaviour
             HandleMove();
 
         cd += Time.deltaTime;
+        if(!isStopped)
+            speed += Time.deltaTime / 100;
     }
 
+    public void GameOver()
+    {
+        FirebaseManager.GameOver(PlayerPrefs.GetString("name"),GetComponent<PlayerProfile>().Score);
+    }
+
+    PlayerProfile profile;
 
     private void HandleMove()
     {
 
         //controller.Move(speed * Time.deltaTime * runDirection);
-        transform.position += new Vector3(runDirection.x * Time.deltaTime * speed,runDirection.y * Time.deltaTime * speed,runDirection.z * Time.deltaTime * speed);
-        string input = Input.inputString;
-
-        if (string.IsNullOrEmpty(input) || !AnimationController.isRunning)
+        transform.position += new Vector3(runDirection.x * Time.deltaTime * speed * Potions.Swiftness,runDirection.y * Time.deltaTime * speed * Potions.Swiftness,runDirection.z * Time.deltaTime * speed * Potions.Swiftness);
+        SwipeInput();
+        if (string.IsNullOrEmpty(input))
             return;
 
-        Debug.Log(input);
-
-        if ((input == "d" || input == "a") && cd < 1f)
+        if ((input == "d" || input == "a") && cd > 1f)
         {
             cd = 0f;
+        } else if((input == "d" || input == "a") && cd < 1f)
+        {
             return;
         }
         switch (input)
         {
             case " ": case "w":
-                anim.SetTrigger("jump_" + Random.Range(1,3));
+                //anim.SetTrigger("jump_" + Random.Range(1,3));
+                if ((anim.GetCurrentAnimatorStateInfo(0).IsName("Jump2") || anim.GetCurrentAnimatorStateInfo(0).IsName("Jump")) && !AnimationController.isRunning)
+                    break;
+                else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Slide") && !AnimationController.isRunning)
+                {
+                    anim.Play("Run");
+                    controller.height = 1.6f;
+                    controller.radius = 0.32f;
+                    controller.center = new Vector3(0, 0.8f, 0);
+                    break;
+                }
+                int r = Random.Range(1, 3);
+                if (r == 1)
+                    anim.Play("Jump");
+                else
+                    anim.Play("Jump2");
                 controller.center = new Vector3(0, 3, 0);
                 //Vector3.MoveTowards(cvc.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset, new Vector3(0, 2, 0), 0.4f);
 
                 break;
             case "s":
-                anim.SetTrigger("slide");
+                if (anim.GetCurrentAnimatorStateInfo(0).IsName("Slide") && !AnimationController.isRunning)
+                    break;
+                else if((anim.GetCurrentAnimatorStateInfo(0).IsName("Jump2") || anim.GetCurrentAnimatorStateInfo(0).IsName("Jump")) && !AnimationController.isRunning)
+                {
+                    anim.Play("Run");
+                    controller.height = 1.6f;
+                    controller.radius = 0.32f;
+                    controller.center = new Vector3(0, 0.8f, 0);
+                    break;
+                }
+                anim.Play("Slide");
+                //anim.SetTrigger("slide");
                 controller.height = 0.25f;
                 controller.radius = 0.25f;
                 controller.center = new Vector3(0, 0.1f, 0);
@@ -76,6 +168,7 @@ public class PlayerMotor : MonoBehaviour
         
     }
 
+
     public void OnControllerAnimationEnd(AnimatorStateInfo stateInfo)
     {
         if(stateInfo.IsTag("jump"))
@@ -93,15 +186,14 @@ public class PlayerMotor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Ground" || other.isTrigger)
+        if (other.gameObject.tag == "Ground" || other.isTrigger || (Potions.Invicible && other.gameObject.tag != "Wall"))
             return;
 
         isStopped = true;
         AssetsHandler.Instance.endUI.SetActive(true);
 
         // depending on hit type choose which animation to play
-
-        anim.SetTrigger("fall_1");
+        anim.Play("Fall");
     }
 
     public bool ChangeDirection()

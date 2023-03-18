@@ -12,19 +12,27 @@ public class OtherAnimationController : StateMachineBehaviour
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (stateInfo.IsName("Jump") || stateInfo.IsName("Jump2"))
+            AudioManager.Play(1);
+        else if (stateInfo.IsName("Slide"))
+            AudioManager.Play(3);
         base.OnStateEnter(animator, stateInfo, layerIndex);
+
+        AnimationController.isRunning = false;
+        AnimationController.SetRunningTrueAsync();
+
         foreach (string trigger in triggerNames)
         {
             animator.ResetTrigger(trigger);
         }
-
-        AnimationController.isRunning = false;
-        AnimationController.SetIsRunningTrueAsync();
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
+
+        if (stateInfo.IsName("Jump") || stateInfo.IsName("Jump2"))
+            AudioManager.PlayOneShot(0);
     }
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

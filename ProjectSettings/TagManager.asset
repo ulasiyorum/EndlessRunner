@@ -10,6 +10,7 @@ TagManager:
   - Laser
   - Desk
   - Server
+  - ClosingWall
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Wall
   - Water
   - UI
-  - 
+  - BehindUI
   - 
   - 
   - 

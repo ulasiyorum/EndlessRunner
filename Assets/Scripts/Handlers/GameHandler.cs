@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VolumetricLines;
@@ -25,25 +26,47 @@ public class GameHandler : MonoBehaviour
     public PlayerProfile profile;
     public CameraMotor cameraMotor;
 
-
-
-    public void RestartGame()
+    public async void MainMenu()
     {
-        SceneManager.LoadScene("SampleScene");
+        player.GameOver();
+        await Task.Delay(15);
+        SceneManager.LoadScene("Start");
+        await Task.Delay(200);
+        GroundMotor.roomCounter = 0;
+        Interstitial.instance.ShowAd();
         GroundMotor.currentAngle = -90;
         GroundMotor.currentCount = 0;
+        CoinBehaviour.Reset();
         VolumetricLineBehavior.Reset();
+    }
+
+    public async void RestartGame()
+    {
+        player.GameOver();
+        Potions.Reset();
+        await Task.Delay(15);
+        SceneManager.LoadScene("SampleScene");
+        await Task.Delay(200);
+        CoinBehaviour.Reset();
+        GroundMotor.currentAngle = -90;
+        GroundMotor.roomCounter = 0;
+        GroundMotor.currentCount = 0;
+        VolumetricLineBehavior.Reset();
+        await Task.Delay(700);
+        Interstitial.instance.ShowAd();
     }
 
     public void RespawnGame()
     {
         // Request ad and everything
-        RespawnSuc();
+        Rewarded.SetReward(RespawnSuc);
+        Rewarded.instance.ShowRewardedAd();
     }
 
     private void RespawnSuc()
     {
         counter.SetActive(true);
         profile.Respawn(counter);
+        Potions.SetInvincible(3);
     }
 }

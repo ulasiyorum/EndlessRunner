@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "961378080326",
+    "project_id": "agentrunner07",
+    "storage_bucket": "agentrunner07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961378080326:android:91e4c944e766f7b6bf1c47",
+        "android_client_info": {
+          "package_name": "com.VerdantGames.AgentRunner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961378080326-sl0dhv7kupkdtd7kd430hvj6c193r56u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-2QS83klsAwNBGPA0lcwKPun0i7w6Kkw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961378080326-sl0dhv7kupkdtd7kd430hvj6c193r56u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -22,7 +22,7 @@ public class ObstacleSpawner : MonoBehaviour
     {
         int random = Random.Range(0, Prefabs.Length);
 
-        if (Prefabs[random].tag == "Wall")
+        if (Prefabs[random].tag == "ClosingWall")
         {
             GameObject obstacle = Instantiate(Prefabs[random]);
             obstacle.transform.parent = transform;

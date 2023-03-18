@@ -22,6 +22,11 @@ public class CoinBehaviour : MonoBehaviour
 
     private static Dictionary<int,Stack<CoinBehaviour>> coins = new Dictionary<int,Stack<CoinBehaviour>>();
 
+    public static void Reset()
+    {
+        coins = new Dictionary<int, Stack<CoinBehaviour>>();
+    }
+
     void Start()
     {
         
@@ -31,8 +36,8 @@ public class CoinBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameHandler.Instance.profile.CollectCoin(4);
-
+        GameHandler.Instance.profile.CollectCoin(1);
+        AudioManager.PlayCollect();
         if (IsLast(gameObject, roomNumber))
             ClearCoins(roomNumber);
         else
@@ -42,9 +47,15 @@ public class CoinBehaviour : MonoBehaviour
 
     private static bool IsLast(GameObject go, int numb)
     {
-        return coins[numb].Peek() == go;
+        try
+        {
+            return coins[numb].Peek() == go;
+        }
+        catch
+        {
+            return false;
+        }
     }
-
     public static CoinDirection DecideAxis(int angle)
     {
         switch(angle)
