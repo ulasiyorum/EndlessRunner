@@ -8,6 +8,7 @@ public class OtherAnimationController : StateMachineBehaviour
     public static string[] triggerNames = { "ninjaJump", "roll", "jump_2", "slide", "jump_1", "turn" };
     private void Awake()
     {
+
     }
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -28,7 +29,7 @@ public class OtherAnimationController : StateMachineBehaviour
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
+    {   
         base.OnStateExit(animator, stateInfo, layerIndex);
 
         if (stateInfo.IsName("Jump") || stateInfo.IsName("Jump2"))

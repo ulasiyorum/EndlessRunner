@@ -15,10 +15,14 @@ public class PlayerMotor : MonoBehaviour
     public float Speed { get => speed; }
     private float speed = 6.2f;
     private CapsuleCollider controller;
-    private Animator anim;
+    [SerializeField] Animator anim;
     private Vector3 runDirection;
     private float cd = 0;
     public bool isStopped = false;
+
+    private float capsuleHeight;
+    private float capsuleRadius;
+    private Vector3 capsuleCenter;
 
     private bool IsPointerOverUIObject()
     {
@@ -75,8 +79,10 @@ public class PlayerMotor : MonoBehaviour
     void Start()
     {
         profile = GetComponent<PlayerProfile>();
-        anim = GetComponent<Animator>();
         controller = GetComponent<CapsuleCollider>();
+        capsuleHeight = controller.height;
+        capsuleRadius = controller.radius;
+        capsuleCenter = controller.center;
         runDirection = Vector3.forward;
     }
 
@@ -171,14 +177,14 @@ public class PlayerMotor : MonoBehaviour
 
     public void OnControllerAnimationEnd(AnimatorStateInfo stateInfo)
     {
-        if(stateInfo.IsTag("jump"))
-            controller.center = new Vector3(0, 0.8f, 0);
+        if (stateInfo.IsTag("jump"))
+            controller.center = capsuleCenter;
 
         if(stateInfo.IsTag("slide"))
         {
-            controller.height = 1.6f;
-            controller.radius = 0.32f;
-            controller.center = new Vector3(0, 0.8f, 0);
+            controller.height = capsuleHeight;
+            controller.radius = capsuleRadius;
+            controller.center = capsuleCenter;
         }
 
         //Vector3.MoveTowards(cvc.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset, new Vector3(0, 0.3f, 0), 0.4f);

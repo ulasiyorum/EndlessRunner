@@ -3,12 +3,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Interstitial : MonoBehaviour
 {
     private readonly string _adUnitId = "ca-app-pub-1954990919263515/6585022784";
     private InterstitialAd interstitialAd;
-
+    public static int played;
     public static Interstitial instance;
     private void Awake()
     {
@@ -28,7 +29,6 @@ public class Interstitial : MonoBehaviour
 
         // create our request used to load the ad.
         var adRequest = new AdRequest.Builder().Build();
-
         // send the request to load the ad.
         InterstitialAd.Load(_adUnitId, adRequest,
             (InterstitialAd ad, LoadAdError error) =>
@@ -45,7 +45,12 @@ public class Interstitial : MonoBehaviour
                           + ad.GetResponseInfo());
 
                 interstitialAd = ad;
+                if(played == 1)
+                    interstitialAd.Show();
+
+                played = 1;
             });
+
     }
 
     public void ShowAd()

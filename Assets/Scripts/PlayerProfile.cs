@@ -15,7 +15,7 @@ public class PlayerProfile : MonoBehaviour
     public bool claimed;
     public int points;
     public DateTime progressStart;
-
+    [SerializeField] Animator animator;
     private int score;
     private double sc;
 
@@ -29,6 +29,8 @@ public class PlayerProfile : MonoBehaviour
     private Vector3 lastPosition;
     private Quaternion lastRotation;
 
+    private Vector3 lastAnimPosition;
+    private Quaternion lastAnimRotation;
     // Start is called before the first frame update
     void Start()
     {
@@ -84,7 +86,6 @@ public class PlayerProfile : MonoBehaviour
         // SavePosition();
         GetComponent<PlayerMotor>().ChangeDirection();
         AssetsHandler.Instance.endUI.SetActive(false);
-        Animator animator = GetComponent<Animator>();
         animator.SetTrigger("respawn");
         await Task.Delay(400);
         animator.enabled = false;
@@ -124,7 +125,8 @@ public class PlayerProfile : MonoBehaviour
 
             if (GameHandler.Instance.player.isStopped)
                 return;
-
+            lastAnimPosition = animator.transform.position;
+            lastAnimRotation = animator.transform.rotation;
             lastPosition = transform.position;
             lastRotation = transform.rotation;
             SavePosition();

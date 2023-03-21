@@ -11,6 +11,11 @@ TagManager:
   - Desk
   - Server
   - ClosingWall
+  - Web
+  - Log
+  - Fire
+  - Spikes
+  - Barrier
   layers:
   - Default
   - TransparentFX

@@ -32,7 +32,6 @@ namespace VolumetricLines
 		static readonly Vector3 Average = new Vector3(1f/3f, 1f/3f, 1f/3f);
 
 		private static Color currentColor = new Color(0,1,0);
-		private static int counter;
 		public static void Reset()
 		{
             currentColor = new Color(0, 1, 0);
@@ -41,7 +40,8 @@ namespace VolumetricLines
         {
 			if (gameObject.tag == "Laser")
 				return;
-            currentColor = new Color(currentColor.r + 0.01f, currentColor.g - 0.01f, currentColor.b + Random.Range(-0.03f, 0.03f));
+
+            currentColor = new Color(currentColor.r + 0.02f, currentColor.g - 0.02f, currentColor.b + Random.Range(-0.05f, 0.05f));
 
             LineColor = currentColor;
         }

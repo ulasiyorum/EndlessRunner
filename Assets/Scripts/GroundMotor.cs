@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using VolumetricLines;
 
 public class GroundMotor : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class GroundMotor : MonoBehaviour
     public static int currentCount = 0;
     private const int roomCount = 3;
     public static GameObject latestObj;
+
+    public static int roomID;
 
     public Transform parent;
     public enum Type
@@ -31,9 +34,11 @@ public class GroundMotor : MonoBehaviour
     public Type type;
     public int id;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        roomID = id;
         roomNumber = roomCounter;
         roomCounter++;
         latestObj = parent.gameObject;
@@ -44,7 +49,7 @@ public class GroundMotor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -54,8 +59,9 @@ public class GroundMotor : MonoBehaviour
 
         created = true;
         Debug.Log(other.gameObject.name);
-
+        Debug.Log(currentCount);
         Generate();
+        UnloadObject(parent.gameObject);
         currentCount--;
     }
 
@@ -67,7 +73,24 @@ public class GroundMotor : MonoBehaviour
         int nextAngle = DecideAngle();
         Type nextType = DecideType();
 
-        GameObject go = Instantiate(FindPrefab(nextType, id));
+        int score = GameHandler.Instance.profile.Score;
+        int nextId;
+        if (score > 8000)
+        {
+            nextId = 0;
+        }
+        else if (score > 2000)
+        {
+            nextId = 2;
+        } else if(score > 500)
+        {
+            nextId = 1;
+        } else
+        {
+            nextId = id;
+        }
+
+        GameObject go = Instantiate(FindPrefab(nextType, nextId));
 
         float pivotSize = DecidePivotSize(nextAngle, go);
 
@@ -91,19 +114,18 @@ public class GroundMotor : MonoBehaviour
 
         if (currentCount < roomCount)
             LatestMotor.Generate();
-
-        UnloadObject(parent.gameObject);
     }
+
 
     private async void UnloadObject(GameObject go)
     {
-        int unloadTime = (2860 - (Mathf.FloorToInt((float)(GameHandler.Instance.player.Speed - 6)) * 250)) * currentCount + (1000 * id);
+        int unloadTime = 1600;
         Debug.Log(unloadTime + " is unload time");
         await Task.Delay(unloadTime);
         try
         {
             if (!GameHandler.Instance.player.isStopped)
-                Destroy(go);
+                Destroy(go,0.8f);
             else
                 StartCoroutine(UnloadObj(go));
         } catch

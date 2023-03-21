@@ -6,6 +6,7 @@
     <package>com.google.android.gms:play-services-base:18.1.0</package>
     <package>com.google.android.ump:user-messaging-platform:2.0.0</package>
     <package>com.google.firebase:firebase-analytics:21.2.0</package>
+    <package>com.google.firebase:firebase-analytics-unity:10.5.0</package>
     <package>com.google.firebase:firebase-app-unity:10.5.0</package>
     <package>com.google.firebase:firebase-auth:21.1.0</package>
     <package>com.google.firebase:firebase-auth-unity:10.5.0</package>
@@ -81,6 +82,7 @@
     <file>Assets/Plugins/Android/com.google.android.ump.user-messaging-platform-2.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.errorprone.error_prone_annotations-2.9.0.jar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-analytics-21.2.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-analytics-unity-10.5.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-annotations-16.2.0.jar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-appcheck-interop-16.1.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-app-unity-10.5.0.aar</file>

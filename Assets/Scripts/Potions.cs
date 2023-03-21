@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Potions : MonoBehaviour
@@ -34,9 +35,6 @@ public class Potions : MonoBehaviour
     private readonly int[] potionDurations = { 30,9999,4,8 };
     [SerializeField] GameObject[] timers;
     [SerializeField] TMP_Text[] counts;
-
-    [SerializeField] Material mat;
-    [SerializeField] Material invisMat;
     private PlayerProfile Player { get => GameHandler.Instance.profile; }
 
     private void Awake()
@@ -67,8 +65,16 @@ public class Potions : MonoBehaviour
         doubleScore = 1;
         swiftness = 1;
         invicible = false;
-        instance.Player.GetComponentInChildren<Renderer>().material = instance.mat;
-        instance.timers[potionID].SetActive(false);
+        try
+        {
+            ChangeMaterial.i.Change(true);
+        }
+         catch
+        {
+
+        }
+        if(SceneManager.GetActiveScene().name == "SampleScene")
+            instance.timers[potionID].SetActive(false);
 
     }
     // Update is called once per frame
@@ -86,7 +92,7 @@ public class Potions : MonoBehaviour
                 doubleScore = 1;
                 swiftness = 1;
                 invicible = false;
-                Player.GetComponentInChildren<Renderer>().material = mat;
+                ChangeMaterial.i.Change(true);
                 timers[potionID].SetActive(false);
             }
         }
@@ -129,7 +135,7 @@ public class Potions : MonoBehaviour
                 break;
             case 2:
                 invicible = true;
-                Player.GetComponentInChildren<Renderer>().material = invisMat;
+                ChangeMaterial.i.Change(false);
                 break;
             case 3:
                 swiftness = 1.25f;
@@ -142,10 +148,10 @@ public class Potions : MonoBehaviour
     public static async void SetInvincible(int sec)
     {
         invicible = true;
-        instance.Player.GetComponentInChildren<Renderer>().material = instance.invisMat;
+        ChangeMaterial.i.Change(false);
         await Task.Delay((sec + 3) * 1000);
         invicible = false;
-        instance.Player.GetComponentInChildren<Renderer>().material = instance.mat;
+        ChangeMaterial.i.Change(true);
     }
 
     public void BuyPotion(int id)

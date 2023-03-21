@@ -20,38 +20,115 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void GenerateObstacle()
     {
-        int random = Random.Range(0, Prefabs.Length);
+        int id = GroundMotor.roomID;
 
-        if (Prefabs[random].tag == "ClosingWall")
+        if (id == 0)
         {
-            GameObject obstacle = Instantiate(Prefabs[random]);
-            obstacle.transform.parent = transform;
-            obstacle.transform.position = transform.position;
-            obstacle.transform.rotation = transform.rotation;
-            obstacle.transform.Rotate(180, 0, 0);
-        } 
-        else if (Prefabs[random].tag == "Laser")
+            int random = Random.Range(0, 4);
+
+            if (Prefabs[random].tag == "ClosingWall")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = transform.position;
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(180, 0, 0);
+            }
+            else if (Prefabs[random].tag == "Laser")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, Random.Range(0.5f, 2f), transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(0, 90, 0);
+            }
+            else if (Prefabs[random].tag == "Desk")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, 0.2f, transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(0, 90, 0);
+            }
+            else if (Prefabs[random].tag == "Server")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(0, 90, 0);
+            }
+        } else if(id == 1)
         {
-            GameObject obstacle = Instantiate(Prefabs[random]);
-            obstacle.transform.parent = transform;
-            obstacle.transform.position = new Vector3(transform.position.x,Random.Range(0.5f,2f),transform.position.z);
-            obstacle.transform.rotation = transform.rotation;
-            obstacle.transform.Rotate(0, 90, 0);
-        } else if (Prefabs[random].tag == "Desk")
+            int random = Random.Range(4, 8);
+
+            if (Prefabs[random].tag == "ClosingWall")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = transform.position;
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(180, 0, 0);
+            }
+            else if (Prefabs[random].tag == "Laser")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, Random.Range(0.5f, 2f), transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(0, 90, 0);
+            }
+            else if (Prefabs[random].tag == "Web")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, 3.5f, transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(0, 0, 90);
+            }
+            else if (Prefabs[random].tag == "Spikes")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(0, 90, 0);
+            }
+        } else
         {
-            GameObject obstacle = Instantiate(Prefabs[random]);
-            obstacle.transform.parent = transform;
-            obstacle.transform.position = new Vector3(transform.position.x, 0.2f, transform.position.z);
-            obstacle.transform.rotation = transform.rotation;
-            obstacle.transform.Rotate(0, 90, 0);
-        }
-        else if (Prefabs[random].tag == "Server")
-        {
-            GameObject obstacle = Instantiate(Prefabs[random]);
-            obstacle.transform.parent = transform;
-            obstacle.transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
-            obstacle.transform.rotation = transform.rotation;
-            obstacle.transform.Rotate(0, 90, 0);
+            int random = Random.Range(8, 12);
+
+            if (Prefabs[random].tag == "ClosingWall")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = transform.position;
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(180, 0, 0);
+            }
+            else if (Prefabs[random].tag == "Barrier")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+            }
+            else if (Prefabs[random].tag == "Web")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, 3.5f, transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(0, 0, 90);
+            }
+            else if (Prefabs[random].tag == "Spikes")
+            {
+                GameObject obstacle = Instantiate(Prefabs[random]);
+                obstacle.transform.parent = transform;
+                obstacle.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                obstacle.transform.rotation = transform.rotation;
+                obstacle.transform.Rotate(0, 90, 0);
+            }
         }
     }
 }

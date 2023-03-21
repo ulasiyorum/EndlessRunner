@@ -29,6 +29,8 @@ public class AssetsHandler : MonoBehaviour
     public GameObject popUpNormalPrefab;
     public Material[] agentMaterials;
 
+    public GameObject[] agents;
+
 
     private void Start()
     {

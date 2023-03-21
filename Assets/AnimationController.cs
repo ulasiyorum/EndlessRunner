@@ -6,7 +6,6 @@ using UnityEngine;
 public class AnimationController : StateMachineBehaviour
 {
     public static bool isRunning = false;
-    public static string[] triggerNames = {"ninjaJump", "roll", "jump_2", "slide", "jump_1", "turn"};
 
     private void Awake()
     {
@@ -17,7 +16,7 @@ public class AnimationController : StateMachineBehaviour
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         isRunning = true;
-
+        animator.ResetTrigger("respawn");
         GameHandler.Instance.player.OnControllerAnimationEnd(animator.GetCurrentAnimatorStateInfo(layerIndex));
 
     }
@@ -30,12 +29,7 @@ public class AnimationController : StateMachineBehaviour
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
-
-
-        foreach(string trigger in triggerNames)
-        {
-            animator.ResetTrigger(trigger);
-        }
+        
 
     }
 

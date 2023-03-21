@@ -17,6 +17,9 @@ public class DBUser
     public DateTime progressStart = DateTime.Now;
     public bool claimed = false;
 
+    public int selected = 0;
+    public bool[] agents = new bool[2] { true,false };
+
 
     public DBUser(int[] sc, DateTime[] dt, int balance, string na, int[] potions, int points, DateTime progress, bool claimed)
     {
@@ -24,6 +27,7 @@ public class DBUser
         name = na;
         this.potions = potions;
         this.balance = balance;
+        agents = new bool[2] { true, false };
         date = dt;
 
         if (progress == null)

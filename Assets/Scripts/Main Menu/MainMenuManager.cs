@@ -23,6 +23,11 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
+        
+    }
+
+    public void StartAttributes()
+    {
         string name = PlayerPrefs.GetString("name", "");
         if (string.IsNullOrEmpty(name))
             name = FirebaseManager._name;
@@ -37,12 +42,12 @@ public class MainMenuManager : MonoBehaviour
                     PlayerPrefs.SetInt("HighScore", sc);
             }
             Potions.SetPotionInventory(current);
+            ShopAgents.instance.OpenTheAgent(current.selected);
             progressBar.SetActive(true);
         }
         else
             balance.text = "0";
-    }
-
+    } 
     public void ChangeBalance()
     {
         balance.text = current.balance.ToString();

@@ -32,8 +32,8 @@ public class GameHandler : MonoBehaviour
         await Task.Delay(15);
         SceneManager.LoadScene("Start");
         await Task.Delay(200);
+        Potions.Reset();
         GroundMotor.roomCounter = 0;
-        Interstitial.instance.ShowAd();
         GroundMotor.currentAngle = -90;
         GroundMotor.currentCount = 0;
         CoinBehaviour.Reset();
@@ -43,17 +43,15 @@ public class GameHandler : MonoBehaviour
     public async void RestartGame()
     {
         player.GameOver();
-        Potions.Reset();
         await Task.Delay(15);
         SceneManager.LoadScene("SampleScene");
         await Task.Delay(200);
         CoinBehaviour.Reset();
+        Potions.Reset();
         GroundMotor.currentAngle = -90;
         GroundMotor.roomCounter = 0;
         GroundMotor.currentCount = 0;
         VolumetricLineBehavior.Reset();
-        await Task.Delay(700);
-        Interstitial.instance.ShowAd();
     }
 
     public void RespawnGame()

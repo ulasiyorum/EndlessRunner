@@ -15,6 +15,7 @@ public class PopUpMessageBehaviour : MonoBehaviour
     void Update()
     {
         transform.position += new Vector3(0, Time.deltaTime * 3f, 0);
-        text.color -= new Color(0, 0, 0, Time.deltaTime / 2);
+        if(text != null)
+            text.color -= new Color(0, 0, 0, Time.deltaTime / 2);
     }
 }

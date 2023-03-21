@@ -175,6 +175,13 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
+    public static void SendPlayer(DBUser player)
+    {
+        string js = JsonConvert.SerializeObject(player);
+        reference.Child("users").Child(userID).SetRawJsonValueAsync(js);
+    }
+
+
     public static DBUser[] Fetch()
     {
         return FetchFromDB();
@@ -235,12 +242,13 @@ public class FirebaseManager : MonoBehaviour
                     db[i].points = 0;
                     db[i].claimed = false;
                 }
-                PlayerPrefs.SetString("fetched",DateTime.Now.Hour + "-" + DateTime.Now.Day);
-                PlayerPrefs.Save();
+                //PlayerPrefs.SetString("fetched",DateTime.Now.Hour + "-" + DateTime.Now.Day);
+                //PlayerPrefs.Save();
             }
+
             if(SceneManager.GetActiveScene().name == "Start")
-                MainMenuManager.instance.Start();
-            LocalSave.SaveLocally(db);
+                MainMenuManager.instance.StartAttributes();
+            //LocalSave.SaveLocally(db);
         }));
 
         return db;
